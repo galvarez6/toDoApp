@@ -13,6 +13,8 @@ import android.widget.ListView;
 public class MainActivity extends AppCompatActivity {
 
     private ToDoAdapter todoAdapter;
+    private ToDoDatabaseHelper dbHelper;
+    private EditText toDoEdit;
     private Button add;
     private Button remove;
 
@@ -23,8 +25,11 @@ public class MainActivity extends AppCompatActivity {
 
         add = findViewById(R.id.addButton);
         remove = findViewById(R.id.removeButton);
+        toDoEdit = findViewById(R.id.todoEdit);
 
-        todoAdapter = new ToDoAdapter(this, R.layout.todo_item, ToDoItem.allItems());
+        dbHelper = new ToDoDatabaseHelper(this);
+        todoAdapter = new ToDoAdapter(this, R.layout.todo_item, dbHelper.allItems());
+        todoAdapter.setItemClikListener(item -> dbHelper.update(item));
         ListView listView = findViewById(R.id.listView);
         listView.setAdapter(todoAdapter);
 
@@ -33,16 +38,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addItem(View view){
-        EditText todoEdit = findViewById(R.id.todoEdit);
-        String description = todoEdit.getText().toString();
+        String description = toDoEdit.getText().toString();
         ToDoItem item = new ToDoItem(description);
+        dbHelper.addItem(item);
         todoAdapter.add(item);
         todoAdapter.notifyDataSetChanged();
-        todoEdit.setText("");
+//        EditText todoEdit = findViewById(R.id.todoEdit);
+//        String description = todoEdit.getText().toString();
+//        ToDoItem item = new ToDoItem(description);
+//        todoAdapter.add(item);
+//        todoAdapter.notifyDataSetChanged();
+        toDoEdit.setText("");
     }
 
     private void removeItem(View view){
-        todoAdapter.clear();
-        todoAdapter.notifyDataSetChanged();
+        dbHelper.deleteAll(); todoAdapter.clear(); todoAdapter.notifyDataSetChanged();
+//        todoAdapter.clear();
+//        todoAdapter.notifyDataSetChanged();
     }
 }

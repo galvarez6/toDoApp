@@ -8,15 +8,25 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /** Provide views for an AdapterView by returning a view
  * for each ToDoItem contained in a list. */
 public class ToDoAdapter extends ArrayAdapter<ToDoItem> {
 
-
     public ToDoAdapter(Context context, int resourceId, List<ToDoItem> items) {
         super(context, resourceId, items);
+    }
+
+    public interface ItemClickListener {
+        void itemClicked(ToDoItem item);
+    }
+
+    private ItemClickListener listener;
+
+    public void setItemClikListener(ItemClickListener listener) {
+        this.listener = listener;
     }
 
     @Override
@@ -29,6 +39,9 @@ public class ToDoAdapter extends ArrayAdapter<ToDoItem> {
                 CheckBox cb = (CheckBox) view;
                 ToDoItem item = (ToDoItem) cb.getTag();
                 item.setDone(cb.isChecked());
+                if (listener != null) {
+                    listener.itemClicked(item);
+                }
             });
         }
 

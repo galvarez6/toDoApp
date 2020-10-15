@@ -6,8 +6,8 @@ import java.util.List;
 /** A to-do item. */
 public class ToDoItem {
 
-    /** All the to-do items. */
-    private static List<ToDoItem> allItems = new ArrayList<>();
+    /** Unique id of this item. */
+    private int id;
 
     private String description;
 
@@ -19,8 +19,17 @@ public class ToDoItem {
     }
 
     public ToDoItem(String description, boolean done) {
+        this(0, description, done);
+    }
+
+    public ToDoItem(int id, String description, boolean done) {
+        this.id = id;
         this.description = description;
         this.done = done;
+    }
+
+    public int id() {
+        return id;
     }
 
     public String description() {
@@ -31,6 +40,10 @@ public class ToDoItem {
         return done;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }
@@ -39,8 +52,4 @@ public class ToDoItem {
         this.done = done;
     }
 
-    /** Return all the to-do items. */
-    public static List<ToDoItem> allItems() {
-        return allItems;
-    }
 }
