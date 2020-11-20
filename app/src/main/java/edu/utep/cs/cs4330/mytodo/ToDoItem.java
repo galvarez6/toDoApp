@@ -43,4 +43,11 @@ public class ToDoItem {
     public static List<ToDoItem> allItems() {
         return allItems;
     }
+
+    @Override
+    public String toString() {
+        return "ToDoItem{" +
+                "description='" + description + '\'' +
+                '}';
+    }
 }

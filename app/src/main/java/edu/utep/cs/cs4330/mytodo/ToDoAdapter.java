@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -14,9 +15,12 @@ import java.util.List;
  * for each ToDoItem contained in a list. */
 public class ToDoAdapter extends ArrayAdapter<ToDoItem> {
 
+    private DataBase db;
+
 
     public ToDoAdapter(Context context, int resourceId, List<ToDoItem> items) {
         super(context, resourceId, items);
+        db = new DataBase(context);
     }
 
     @Override
@@ -29,6 +33,17 @@ public class ToDoAdapter extends ArrayAdapter<ToDoItem> {
                 CheckBox cb = (CheckBox) view;
                 ToDoItem item = (ToDoItem) cb.getTag();
                 item.setDone(cb.isChecked());
+                int id = position +1;
+                if(!checkBox.isChecked()){
+                    db.delete(item.description());
+                    Toast.makeText(getContext(),"debug rem: " + id, Toast.LENGTH_SHORT).show();
+                }
+                else if(checkBox.isChecked()){
+                    db.addItem(item);
+                    Toast.makeText(getContext(),"adding to db", Toast.LENGTH_SHORT).show();
+                }
+                //db.addItem(item);
+                //Toast.makeText(getContext(),"adding to db", Toast.LENGTH_SHORT).show();
             });
         }
 
